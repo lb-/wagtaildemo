@@ -15,6 +15,7 @@ from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
 from wagtail.wagtailforms.models import AbstractEmailForm, AbstractFormField
 from wagtail.wagtailsearch import index
+from wagtail.wagtailadmin.utils import send_mail
 
 from wagtail.wagtailcore.blocks import TextBlock, StructBlock, StreamBlock, FieldBlock, CharBlock, RichTextBlock, RawHTMLBlock
 from wagtail.wagtailimages.blocks import ImageChooserBlock
@@ -652,3 +653,22 @@ class FormPage(AbstractEmailForm):
             FieldPanel('subject'),
         ], "Email"),
     ]
+
+    def process_form_submission(self, form):
+        submission = super(
+            AbstractEmailForm, self).process_form_submission(form)
+        if self.to_address:
+            self.send_mail(form)
+        return submission
+
+    def send_mail(self, form):
+        addresses = [x.strip() for x in self.to_address.split(',')]
+        content = []
+        for field in form:
+            value = field.value()
+            if isinstance(value, list):
+                value = ', '.join(value)
+            content.append('{}: {}'.format(field.label, value))
+        content = '\n'.join(content)
+        send_mail(
+            self.subject, content, addresses, self.from_address)
