@@ -663,5 +663,5 @@ class FormPage(AbstractEmailForm):
                 value = ', '.join(value)
             content.append('{}: {}'.format(field.label, value))
         content = '\n'.join(content)
-        send_mail(
-            self.subject, content, addresses, self.from_address)
+        subject = self.subject + " - " + date.today().strftime('%x')
+        send_mail(subject, content, addresses, self.from_address)
