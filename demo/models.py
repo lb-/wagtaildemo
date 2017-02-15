@@ -639,16 +639,16 @@ class FormPage(AbstractEmailForm):
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
 
-FormPage.content_panels = [
-    FieldPanel('title', classname="full title"),
-    FieldPanel('intro', classname="full"),
-    InlinePanel('form_fields', label="Form fields"),
-    FieldPanel('thank_you_text', classname="full"),
-    MultiFieldPanel([
-        FieldRowPanel([
-            FieldPanel('from_address', classname="col6"),
-            FieldPanel('to_address', classname="col6"),
-        ]),
-        FieldPanel('subject'),
-    ], "Email"),
-]
+    content_panels = [
+        FieldPanel('title', classname="full title"),
+        FieldPanel('intro', classname="full"),
+        InlinePanel('form_fields', label="Form fields"),
+        FieldPanel('thank_you_text', classname="full"),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel('subject'),
+        ], "Email"),
+    ]
