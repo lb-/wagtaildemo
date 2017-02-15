@@ -654,13 +654,6 @@ class FormPage(AbstractEmailForm):
         ], "Email"),
     ]
 
-    def process_form_submission(self, form):
-        submission = super(
-            AbstractEmailForm, self).process_form_submission(form)
-        if self.to_address:
-            self.send_mail(form)
-        return submission
-
     def send_mail(self, form):
         addresses = [x.strip() for x in self.to_address.split(',')]
         content = []
